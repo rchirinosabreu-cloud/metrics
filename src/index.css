@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
+
+html, body, #root {
+  height: 100%; /* Ensure html, body, and root elements take full height */
+}
+
+body {
+	font-family: 'DM Sans', sans-serif;
+	background: radial-gradient(circle at top left,
+			#3b0a57 0%,
+			#1a0726 40%,
+			#0b0312 100%);
+	color: #e5e7eb;
+}

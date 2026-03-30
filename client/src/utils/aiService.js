@@ -1,5 +1,5 @@
 // AI Analysis Service - Updated to use Centralized Backend API
-const API_URL = 'https://api.brainstudioagencia.com/api/ai-analysis';
+const API_URL = import.meta.env.VITE_API_URL || 'https://api.brainstudioagencia.com/api/ai-analysis';
 
 export async function generateAIInterpretations(processedData) {
   console.log("Generating AI Interpretations...", processedData);

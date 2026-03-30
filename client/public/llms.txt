@@ -1,0 +1,2 @@
+## Pages
+- [BrainStudio Metrics Generator](/): Herramienta profesional de reportes de Meta Business Suite y Pauta Digital con análisis de IA

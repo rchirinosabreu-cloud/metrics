@@ -1,5 +1,5 @@
-// Restored correct key structure and improved debugging
-const API_KEY = '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';
+// AI Analysis Service - Updated to use Centralized Backend API
+const API_URL = 'https://api.brainstudioagencia.com/api/ai-analysis';
 
 export async function generateAIInterpretations(processedData) {
   console.log("Generating AI Interpretations...", processedData);
@@ -94,26 +94,13 @@ export async function generateAIInterpretations(processedData) {
 
 async function fetchAI(prompt) {
   try {
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    const response = await fetch(API_URL, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${API_KEY}`
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'gpt-5.1', 
-        messages: [
-          { 
-            role: 'system', 
-            content: 'Eres un consultor experto. Responde siempre en JSON válido y bien estructurado.' 
-          },
-          { 
-            role: 'user', 
-            content: prompt 
-          }
-        ],
-        temperature: 0.7,
-        response_format: { type: "json_object" }
+        prompt: prompt
       })
     });
 
@@ -139,12 +126,12 @@ async function fetchAI(prompt) {
     console.error("AI Service Overall Error:", error);
     // Return graceful fallback data so report doesn't crash
     return {
-      executiveSummary: "⚠️ No se pudo generar el análisis. Error de conexión con IA.",
+      executiveSummary: "⚠️ No se pudo generar el análisis. Error de conexión con el servicio de IA.",
       platformAnalysis: "Datos no disponibles temporalmente.",
       contentAnalysis: "Datos no disponibles temporalmente.",
       growthAnalysis: "Datos no disponibles temporalmente.",
-      recommendations: ["Verificar API Key", "Intentar regenerar reporte"],
-      adsExecutiveSummary: "⚠️ Análisis no disponible. Error de conexión.",
+      recommendations: ["Reintentar en unos momentos", "Contactar a soporte técnico si el problema persiste"],
+      adsExecutiveSummary: "⚠️ Análisis no disponible. Error de conexión con el servidor.",
       optimizationOpportunities: "Datos no disponibles temporalmente.",
       adsRecommendations: ["Verificar conexión"],
       closingText: ""

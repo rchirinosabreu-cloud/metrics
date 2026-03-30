@@ -17,7 +17,18 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 
-// Endpoint de salud
+// Endpoint de salud y raíz
+app.get('/', (req, res) => {
+  res.json({
+    status: 'online',
+    service: 'Intelligence API',
+    endpoints: {
+      health: '/health',
+      analysis: '/api/ai-analysis (POST)'
+    }
+  });
+});
+
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', service: 'Intelligence API' });
 });

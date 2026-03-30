@@ -8,7 +8,7 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Configuración de CORS
+// Configuración de CORS - Permitir el nuevo dominio
 const corsOptions = {
   origin: 'https://metricas.brainstudioagencia.com',
   optionsSuccessStatus: 200
@@ -17,13 +17,25 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 
+// Endpoint raíz para depuración
+app.get('/', (req, res) => {
+  res.json({
+    status: 'online',
+    service: 'Intelligence API',
+    endpoints: {
+      health: '/health',
+      analysis: '/api/ai-analysis (POST) or /ai-analysis (POST)'
+    }
+  });
+});
+
 // Endpoint de salud
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', service: 'Intelligence API' });
 });
 
-// Endpoint de análisis de IA
-app.post('/api/ai-analysis', async (req, res) => {
+// Handler centralizado para el análisis de IA
+const handleAIAnalysis = async (req, res) => {
   try {
     const { prompt, model: requestedModel } = req.body;
 
@@ -67,7 +79,7 @@ app.post('/api/ai-analysis', async (req, res) => {
     if (!response.ok) {
       console.error('Error de OpenAI:', data);
 
-      // Fallback a gpt-4o si gpt-5.4 falla o no existe
+      // Fallback a gpt-4o si gpt-5.4 falla o no existe (ej. 404)
       if (OPENAI_MODEL === 'gpt-5.4' && response.status === 404) {
         console.log('Intentando fallback a gpt-4o...');
         const fallbackResponse = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -106,7 +118,11 @@ app.post('/api/ai-analysis', async (req, res) => {
     console.error('Error interno del servidor:', error);
     res.status(500).json({ error: 'Error interno al procesar el análisis de IA' });
   }
-});
+};
+
+// Soportar ambas rutas para el análisis de IA
+app.post('/api/ai-analysis', handleAIAnalysis);
+app.post('/ai-analysis', handleAIAnalysis);
 
 app.listen(PORT, () => {
   console.log(`Servidor Intelligence API corriendo en el puerto ${PORT}`);

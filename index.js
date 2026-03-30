@@ -10,25 +10,14 @@ const PORT = process.env.PORT || 3000;
 
 // Configuración de CORS
 const corsOptions = {
-  origin: 'https://metrics.brainstudioagencia.com',
+  origin: 'https://metricas.brainstudioagencia.com',
   optionsSuccessStatus: 200
 };
 
 app.use(cors(corsOptions));
 app.use(express.json());
 
-// Endpoint de salud y raíz
-app.get('/', (req, res) => {
-  res.json({
-    status: 'online',
-    service: 'Intelligence API',
-    endpoints: {
-      health: '/health',
-      analysis: '/api/ai-analysis (POST)'
-    }
-  });
-});
-
+// Endpoint de salud
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', service: 'Intelligence API' });
 });
